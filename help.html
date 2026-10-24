@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guida Piano Vacanze — Dogana Chiasso</title>
+<style>
+:root{--primary:#2c3e50;--secondary:#3498db;--success:#27ae60;--accent:#e74c3c;--bg:#f4f7f6;--warn:#f39c12;--admin:#8e44ad}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:#333;display:flex;min-height:100vh}
+a{color:var(--secondary)}
+.sidebar{width:280px;min-width:280px;background:var(--primary);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+.sidebar-head{padding:16px 16px 10px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sidebar-head h1{margin:0 0 4px;font-size:1.05rem}
+.sidebar-head p{margin:0;font-size:.75rem;opacity:.85;line-height:1.35}
+.role-pill{display:inline-block;margin-top:8px;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:800;background:rgba(255,255,255,.15)}
+.role-pill.admin{background:var(--admin)}
+.search-wrap{padding:10px 12px}
+.search-wrap input{width:100%;padding:8px 10px;border:none;border-radius:6px;font-size:.84rem}
+.nav{flex:1;overflow-y:auto;padding:6px 0 20px}
+.nav-group{padding:10px 14px 4px;font-size:.68rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;opacity:.55}
+.nav a{display:block;padding:8px 16px;color:#ecf0f1;text-decoration:none;font-size:.82rem;font-weight:600;border-left:3px solid transparent}
+.nav a:hover,.nav a.active{background:rgba(52,152,219,.25);border-left-color:var(--secondary);color:#fff}
+.nav a.admin-link{color:#e8daef}
+.nav a.admin-link:hover,.nav a.admin-link.active{background:rgba(142,68,173,.35);border-left-color:#bb8fce}
+.main{flex:1;min-width:0;padding:22px 28px 60px;max-width:980px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.topbar h2{margin:0;color:var(--primary);font-size:1.35rem}
+.btn{padding:8px 13px;border:none;border-radius:4px;cursor:pointer;font-weight:700;color:#fff;background:var(--secondary);font-size:.84rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{opacity:.9}
+.btn-back{background:#7f8c8d}
+.chapter{scroll-margin-top:18px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:22px 24px;margin-bottom:18px;border-left:5px solid var(--secondary)}
+.chapter.admin-only{border-left-color:var(--admin)}
+.chapter h3{margin:0 0 12px;color:var(--primary);font-size:1.15rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chapter.admin-only h3{color:var(--admin)}
+.badge{font-size:.7rem;padding:2px 8px;border-radius:10px;font-weight:800;background:#eaf2f8;color:#1f618d}
+.badge.admin{background:#f5eef8;color:#6c3483}
+.step{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin:10px 0}
+.step h4{margin:0 0 6px;font-size:.92rem;color:var(--primary)}
+.step p,.step li{font-size:.88rem;line-height:1.45;margin:0 0 6px}
+.step ul,.step ol{margin:6px 0 0 18px;padding:0}
+.tip,.warn,.ok{border-radius:8px;padding:10px 12px;margin:10px 0;font-size:.86rem;line-height:1.4}
+.tip{background:#eaf2f8;border-left:4px solid var(--secondary);color:#1f618d}
+.warn{background:#fef9e7;border-left:4px solid var(--warn);color:#7d6608}
+.ok{background:#eafaf1;border-left:4px solid var(--success);color:#1e8449}
+kbd{background:#fff;border:1px solid #999;border-bottom-width:2px;border-radius:3px;padding:0 5px;font-family:inherit;font-weight:700}
+.example{font-family:Consolas,"Courier New",monospace;background:#1e293b;color:#e2e8f0;padding:10px 12px;border-radius:6px;font-size:.8rem;overflow-x:auto;white-space:pre-wrap;margin:8px 0}
+.hidden{display:none!important}
+.mark{background:#fde68a;padding:0 2px;border-radius:2px}
+@media(max-width:860px){
+  body{flex-direction:column}
+  .sidebar{width:100%;min-width:0;height:auto;position:relative;max-height:none}
+  .nav{max-height:220px}
+  .main{padding:16px}
+}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-head">
+    <h1>📖 Guida Piano Vacanze</h1>
+    <p>Dogana Chiasso — istruzioni passo-passo e contestuali</p>
+    <span id="rolePill" class="role-pill">Collaboratore</span>
+  </div>
+  <div class="search-wrap">
+    <input type="search" id="helpSearch" placeholder="🔍 Cerca nella guida…" autocomplete="off">
+  </div>
+  <nav class="nav" id="helpNav">
+    <div class="nav-group" data-group="collab">Guida Collaboratore</div>
+    <a href="#login" data-chapter="login">1. Accesso &amp; Collegamento</a>
+    <a href="#calendario" data-chapter="calendario">2. Calendario e Tornate</a>
+    <a href="#inserimento" data-chapter="inserimento">3. Inserire / Cancellare</a>
+    <a href="#regole" data-chapter="regole">4. Regole e Limiti</a>
+    <a href="#ranking" data-chapter="ranking">5. Ranking e Outlook</a>
+    <a href="#divergenze" data-chapter="divergenze">6. Conflitti e Accordi</a>
+    <div class="nav-group admin-only" data-group="admin">Guida Amministratore</div>
+    <a href="#admin-db" class="admin-link admin-only" data-chapter="admin-db">Admin 1. Database</a>
+    <a href="#admin-tornate" class="admin-link admin-only" data-chapter="admin-tornate">Admin 2. Tornate</a>
+    <a href="#admin-anagrafica" class="admin-link admin-only" data-chapter="admin-anagrafica">Admin 3. Collaboratori</a>
+    <a href="#admin-regole" class="admin-link admin-only" data-chapter="admin-regole">Admin 4. Regole</a>
+    <a href="#admin-festivi" class="admin-link admin-only" data-chapter="admin-festivi">Admin 5. Festivi &amp; Chiusure</a>
+    <a href="#admin-ranking" class="admin-link admin-only" data-chapter="admin-ranking">Admin 6. Ranking</a>
+    <a href="#admin-divergenze" class="admin-link admin-only" data-chapter="admin-divergenze">Admin 7. Divergenze</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <h2>Guida interattiva</h2>
+    <a class="btn btn-back" href="piano%20vacanze.html">← Torna al programma</a>
+  </div>
+  <div id="searchEmpty" class="warn hidden">Nessun capitolo corrisponde alla ricerca. Prova con parole come «password», «Outlook», «tornata», «chiusura».</div>
+
+  <!-- COLLABORATORE -->
+  <section class="chapter" id="login" data-chapter="login" data-keywords="login accesso password primo collegamento ctrl+v entra consenti database appunti">
+    <h3>Passo 1: Primo Accesso, Password e Collegamento Rapido <span class="badge">Collaboratore</span></h3>
+    <div class="step">
+      <h4>🔑 Primo login</h4>
+      <ol>
+        <li>Apri il programma e inserisci il tuo <b>Numero Personale</b> sia come utente sia come password.</li>
+        <li>Al primo accesso ti viene chiesto di scegliere una <b>password personale</b>: minimo 4 caratteri e diversa dal Numero Personale.</li>
+        <li>Se dimentichi la password, rivolgiti all’Amministratore (può ripristinarla al Nr. Personale).</li>
+      </ol>
+    </div>
+    <div class="step">
+      <h4>📂 Prima volta su un PC nuovo — collegamento al database</h4>
+      <p>Il percorso del file <code>db_vacanze.json</code> viene già copiato negli appunti. Devi solo:</p>
+      <ol>
+        <li>Cliccare il pulsante verde <b>«Apri finestra, premi Ctrl + V e Invio»</b>.</li>
+        <li>Nella finestra di Windows <b>non cercare nelle cartelle</b>: premi <kbd>Ctrl</kbd> + <kbd>V</kbd> e poi <kbd>Invio</kbd>.</li>
+      </ol>
+      <div class="ok">✅ Il browser memorizza il collegamento: agli accessi successivi non dovrai ripeterlo.</div>
+    </div>
+    <div class="step">
+      <h4>🔁 Accessi successivi</h4>
+      <ol>
+        <li>Inserisci Nr. Personale e password, poi clicca <b>Entra</b>.</li>
+        <li>Se il browser chiede il permesso sul file, conferma con <b>Consenti</b>.</li>
+      </ol>
+    </div>
+    <div class="tip">💡 Usa il pulsante <b>❓ Come accedere</b> anche dalla maschera di login del programma.</div>
+  </section>
+
+  <section class="chapter" id="calendario" data-chapter="calendario" data-keywords="calendario tornata annuale mensile settimanale banner filtri colonne adatta punteggi festivi decs tooltip">
+    <h3>Passo 2: Navigazione del Calendario e Tornate <span class="badge">Collaboratore</span></h3>
+    <div class="step">
+      <h4>🟢 Banner in alto</h4>
+      <ul>
+        <li><b>Verde</b>: una Tornata (1°, 2° o 3° Giro) è aperta — puoi pianificare sulla tua riga.</li>
+        <li><b>Rosso</b>: pianificazione bloccata (sola lettura).</li>
+        <li>Se compare «ATTIVATA MANUALMENTE DALL’ADMIN», l’Admin ha forzato lo stato della tornata.</li>
+      </ul>
+    </div>
+    <div class="step">
+      <h4>🗓️ Viste</h4>
+      <ul>
+        <li><b>Annuale</b>: pianificazione tipica a <b>settimane intere</b>.</li>
+        <li><b>Mensile</b> e <b>Settimanale</b>: dettaglio <b>giorno per giorno</b> (utile per il Premio Fedeltà a giornate).</li>
+      </ul>
+    </div>
+    <div class="step">
+      <h4>🛠️ Pulsanti utili</h4>
+      <ul>
+        <li><b>Nascondi Colonne</b>: nasconde V, F, PF, %, Pt per vedere più settimane.</li>
+        <li><b>Adatta Tutto l’Anno</b>: riduce le colonne per far entrare tutto l’anno senza scroll orizzontale.</li>
+        <li><b>Filtri Funzione / Unità / Gruppo</b>: restringono le righe mostrate.</li>
+      </ul>
+    </div>
+    <div class="tip">🖱️ Passa il mouse sulle intestazioni delle settimane: vedi <b>punteggi</b>, commenti di formattazione e indicazioni su <b>festivi / vacanze DECS</b>.</div>
+  </section>
+
+  <section class="chapter" id="inserimento" data-chapter="inserimento" data-keywords="inserire cancellare vacanza flaz premio fedeltà v f p k mil corso saldo punti chiusura ufficio consolidata bloccata tornata precedente">
+    <h3>Passo 3: Come Inserire o Cancellare le Vacanze <span class="badge">Collaboratore</span></h3>
+    <div class="step">
+      <h4>✏️ Menu «Inserisci»</h4>
+      <ul>
+        <li><b>V (Vacanza)</b>: ferie ordinarie, di solito a settimane.</li>
+        <li><b>F (FLAZ)</b>: compensazione, espressa in settimane.</li>
+        <li><b>P (Premio Fedeltà)</b>: fruibile anche a giornate in vista Mensile/Settimanale, se la tornata e le regole lo consentono.</li>
+        <li><b>K / MIL / CORSO</b>: assenze speciali inserite dall’Amministrazione — <b>non modificabili</b> dall’utente.</li>
+      </ul>
+    </div>
+    <div class="step">
+      <h4>📊 Saldo sulla tua riga</h4>
+      <p>Controlla le colonne <b>V - Vac.</b>, <b>F - FLAZ</b>, <b>P - pr.fed.</b> e i punti accumulati in <b>Pt.</b>. Non puoi superare i diritti assegnati.</p>
+    </div>
+    <div class="step">
+      <h4>📅 Festivi, DECS e Chiusure Ufficio</h4>
+      <ul>
+        <li><b>Festivi ufficiali Canton Ticino</b>: non consumano giorni di vacanza.</li>
+        <li><b>Vacanze scolastiche DECS</b>: valgono più punti per il ranking; se prendi ferie, i giorni <b>scalano normalmente</b>.</li>
+        <li><b>Chiusure Ufficio</b>: valgono solo per le funzioni indicate. Se «Conta come V», il sistema registra automaticamente una V; altrimenti i giorni restano liberi (non scalati).</li>
+      </ul>
+    </div>
+    <div class="warn">⚠️ Clicca di nuovo sulla stessa cella per togliere l’inserimento (toggle). Le celle bloccate non sono cliccabili.</div>
+    <div class="step">
+      <h4>🔒 Vacanze consolidate delle tornate precedenti</h4>
+      <p>Quando una tornata si chiude, le scelte fatte in quel giro diventano <b>definitive</b>. Esempio: in 2ª Tornata non puoi più cancellare né modificare le settimane inserite in 1ª Tornata.</p>
+      <ul>
+        <li>Le celle consolidate mantengono il colore della tornata di origine e mostrano il cursore di divieto.</li>
+        <li>Passando il mouse leggi «🔒 Consolidata in 1ª Tornata (non modificabile)».</li>
+        <li>Puoi comunque aggiungere vacanze sulle celle libere e modificare quelle inserite nella tornata in corso.</li>
+        <li>Per correzioni su scelte consolidate rivolgiti all’Amministratore.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter" id="regole" data-chapter="regole" data-keywords="regole plausibilità consecutive periodo contemporanee trasversali rev assd limite diritto">
+    <h3>Passo 4: Regole di Plausibilità, Limiti e Contemporaneità <span class="badge">Collaboratore</span></h3>
+    <div class="step">
+      <h4>Blocchi automatici (esempi tipici)</h4>
+      <ul>
+        <li><b>Limite di diritto</b>: non superare le settimane/giorni di V, F o PF assegnati.</li>
+        <li><b>Settimane consecutive</b>: es. max 3 nell’anno; max 2 nel periodo estivo sett. 24–34 in 1ª Tornata.</li>
+        <li><b>Limite nel periodo</b>: es. max 2 settimane in estate sett. 24–34; max 1 nelle altre vacanze scolastiche (sett. 6, 13, 44, 51, 52) in 1ª Tornata; in quei periodi spesso è vietato usare <b>P</b>.</li>
+        <li><b>Assenze contemporanee</b>: tetti per Funzione (es. Cgr, CsqM/CsqP/SdscP/SdscM), Unità o Gruppo in bassa/alta stagione e settimane speciali (es. Sett. 27 formazione).</li>
+      </ul>
+    </div>
+    <div class="step">
+      <h4>🛡️ Funzioni trasversali («Solo Funzione»)</h4>
+      <p>Funzioni come <b>REV</b> o <b>AssD</b> possono essere blindate: contano solo i limiti della propria funzione e <b>ignorano</b> i tetti di Unità/Gruppo.</p>
+    </div>
+    <div class="ok">📋 Nel programma, il pulsante <b>«Le Mie Regole»</b> mostra subito i limiti reali filtrati sulla tua Funzione, Unità e Gruppo.</div>
+  </section>
+
+  <section class="chapter" id="ranking" data-chapter="ranking" data-keywords="ranking graduatoria turno outlook email notifica concludi di turno ora punti">
+    <h3>Passo 5: Modalità Ranking e Notifica Outlook <span class="badge">Collaboratore</span></h3>
+    <div class="step">
+      <h4>🏆 Ordine di scelta</h4>
+      <p>Per le funzioni con Ranking attivo, chi ha accumulato <b>meno punti</b> l’anno precedente è <b>1°</b> in graduatoria e sceglie per primo.</p>
+    </div>
+    <div class="step">
+      <h4>🟢 È IL TUO TURNO</h4>
+      <p>Puoi inserire ferie solo quando il sistema indica <b>DI TURNO ORA</b> sulla tua riga / barra verde. Chi è in attesa vede solo i badge, senza pulsanti.</p>
+    </div>
+    <div class="step">
+      <h4>✅ Concludi il turno</h4>
+      <ol>
+        <li>Clicca <b>«Ho finito: concludi il turno e avvisa … su Outlook»</b>.</li>
+        <li>Il turno passa al collega successivo in graduatoria.</li>
+        <li>Si apre Outlook con email già pronta verso <code>nome.cognome@bazg.admin.ch</code>.</li>
+      </ol>
+      <p>Se sei l’ultimo della graduatoria, concludi il giro <b>senza</b> aprire Outlook.</p>
+    </div>
+  </section>
+
+  <section class="chapter" id="divergenze" data-chapter="divergenze" data-keywords="divergenze conflitti problematiche rosso contemporaneità accordo admin">
+    <h3>Passo 6: Segnalazione Conflitti e Accordi <span class="badge">Collaboratore</span></h3>
+    <div class="step">
+      <h4>⚠️ Celle o settimane in rosso</h4>
+      <p>Se viene superato un limite di contemporaneità, il calendario evidenzia il conflitto (strisce rosse / icona ⚠️). Passa il mouse sulla cella per il dettaglio.</p>
+    </div>
+    <div class="step">
+      <h4>🤝 Cosa fare</h4>
+      <ol>
+        <li>Contatta il collega coinvolto e/o l’Amministratore.</li>
+        <li>L’Admin può registrare una <b>divergenza appianata</b> (accordo) e, se serve, togliere subito la V a chi cede.</li>
+      </ol>
+    </div>
+    <div class="tip">Il pulsante <b>⚠️ Report Problematiche</b> (quando compare) apre l’elenco delle divergenze attive e dello storico accordi.</div>
+  </section>
+
+  <!-- ADMIN -->
+  <section class="chapter admin-only" id="admin-db" data-chapter="admin-db" data-keywords="admin database excel json percorso rete fabbrica password crea db">
+    <h3>Admin 1: Database, Import Excel e Percorso Rete <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <h4>Primo accesso di fabbrica</h4>
+      <p>Utente <b>ADMIN</b> / password <b>admin</b>. Alla prima volta scegli una password Admin definitiva (diversa da quella di fabbrica, min. 4 caratteri).</p>
+    </div>
+    <div class="step">
+      <h4>File database</h4>
+      <ul>
+        <li><b>Apri/Cambia DB</b> o <b>Crea Nuovo DB</b> (.json).</li>
+        <li><b>Crea DB da Excel</b> per partire da un foglio esistente.</li>
+        <li>Configura il <b>percorso completo</b> del file per i collaboratori (incolla rapido <kbd>Ctrl</kbd>+<kbd>V</kbd>), poi <b>Salva Percorso</b>. Opzionale: incorpora il percorso nell’HTML.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter admin-only" id="admin-tornate" data-chapter="admin-tornate" data-keywords="admin tornate colori override auto chiuso forza">
+    <h3>Admin 2: Gestione Tornate, Date e Colori <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <h4>1ª / 2ª / 3ª Tornata</h4>
+      <p>Imposta date di apertura/chiusura e i colori distintivi di <b>V, F, P</b> per ogni giro. Vale sempre la tornata attiva (o quella forzata).</p>
+    </div>
+    <div class="step">
+      <h4>Stato / Override</h4>
+      <ul>
+        <li><b>AUTO</b>: secondo le date.</li>
+        <li><b>1ª / 2ª / 3ª</b>: forza una tornata aperta.</li>
+        <li><b>CHIUSO</b>: blocca la pianificazione per tutti.</li>
+      </ul>
+    </div>
+    <div class="step">
+      <h4>🔒 Consolidamento automatico</h4>
+      <p>Quando passa alla tornata successiva, i collaboratori non possono più cancellare o modificare le assenze inserite nei giri precedenti. L’Amministratore può sempre modificare o cancellare qualsiasi cella; con il menu <b>Tornata colore</b> sopra il calendario sceglie con quale tornata marcare i propri inserimenti.</p>
+    </div>
+    <div class="warn">Dopo ogni modifica importante usa <b>💾 Salva</b> per scrivere sul file .json.</div>
+  </section>
+
+  <section class="chapter admin-only" id="admin-anagrafica" data-chapter="admin-anagrafica" data-keywords="admin collaboratori anagrafica reset password filtri diritti gradi">
+    <h3>Admin 3: Tabella Collaboratori <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <h4>Tabella stile Excel</h4>
+      <ul>
+        <li>Filtri per testo, grado, funzione, unità, gruppo; ordinamento sulle colonne.</li>
+        <li>Modifica rapida inline di grado, funzione, unità, gruppo, %, diritti V/F/PF e punti anno precedente.</li>
+        <li>Pulsante <b>🔑 Reset</b>: riporta la password al Nr. Personale (al prossimo accesso l’utente dovrà cambiarla).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter admin-only" id="admin-regole" data-chapter="admin-regole" data-keywords="admin regole modifica assenza formattazione ogni unità gruppo">
+    <h3>Admin 4: Creazione e Modifica delle Regole <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <h4>Due generi</h4>
+      <ul>
+        <li><b>Regola di Assenza</b>: limiti (contemporanei, consecutive, periodo, tipi V/F/P), target Funzione/Unità/Gruppo, tornata.</li>
+        <li><b>Regola di Formattazione</b>: colore colonna e annotazione (tooltip).</li>
+      </ul>
+    </div>
+    <div class="step">
+      <h4>✏️ Modifica</h4>
+      <p>Clicca <b>Modifica</b> sulla riga, aggiorna i campi, poi <b>Aggiorna Regola Selezionata</b> (o Annulla). Usa <b>OGNI SINGOLA UNITÀ</b> / <b>OGNI SINGOLO GRUPPO</b> per applicare il tetto «per ciascun gruppo/unità».</p>
+    </div>
+  </section>
+
+  <section class="chapter admin-only" id="admin-festivi" data-chapter="admin-festivi" data-keywords="admin festivi ticino decs chiusura ufficio conta come v">
+    <h3>Admin 5: Festivi Ticino, Vacanze DECS e Chiusure Ufficio <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <h4>Festivi e DECS</h4>
+      <p>Usa <b>Carica/Ripristina Festivi Canton Ticino</b> per l’anno scelto. I festivi non scalano; le DECS sono indicazioni di calendario (le ferie contano normalmente).</p>
+    </div>
+    <div class="step">
+      <h4>🏢 Chiusure Ufficio</h4>
+      <ol>
+        <li>Imposta <b>Dal / Al</b>, descrizione e funzioni destinatarie (o tutte).</li>
+        <li>Spunta <b>Conta come V</b> se quei giorni devono consumare vacanza automaticamente.</li>
+        <li>Clicca <b>Aggiungi Chiusura</b> e salva.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="chapter admin-only" id="admin-ranking" data-chapter="admin-ranking" data-keywords="admin ranking blindatura consolida fine anno imposta qui passa successivo">
+    <h3>Admin 6: Ranking, Turni e Consolidamento Fine Anno <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <ul>
+        <li>Attiva la <b>blindatura funzioni trasversali</b> e le funzioni in <b>Modalità Ranking</b>.</li>
+        <li>Nella Graduatoria: <b>Imposta Qui</b>, <b>Passa al Successivo</b>, <b>Riavvia dal 1°</b>.</li>
+        <li>A fine anno: scegli l’anno target e <b>Consolida e salva i punteggi</b> per generare la graduatoria dell’anno successivo.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="chapter admin-only" id="admin-divergenze" data-chapter="admin-divergenze" data-keywords="admin divergenze accordo cede favorito rimuovi v">
+    <h3>Admin 7: Registrazione Accordi / Divergenze Appianate <span class="badge admin">Solo Admin</span></h3>
+    <div class="step">
+      <ol>
+        <li>Apri <b>Report Problematiche</b>.</li>
+        <li>Scegli periodo, chi cede e chi è favorito; aggiungi note se serve.</li>
+        <li>Opzione <b>Rimuovi subito la ‘V’ a chi cede</b>, poi <b>Registra Accordo</b>.</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  const AUTH_KEY = "vacanze_dogana_auth";
+  function leggiSessione() {
+    try {
+      const raw = localStorage.getItem(AUTH_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) { return null; }
+  }
+  const sess = leggiSessione();
+  const isAdmin = !!(sess && sess.isAdmin === true);
+  document.body.classList.toggle("is-admin", isAdmin);
+  document.querySelectorAll(".admin-only").forEach(el => {
+    if (!isAdmin) el.classList.add("hidden");
+  });
+  const pill = document.getElementById("rolePill");
+  if (isAdmin) {
+    pill.textContent = "Amministratore";
+    pill.classList.add("admin");
+  } else if (sess && sess.utente) {
+    const u = sess.utente;
+    pill.textContent = "Collaboratore" + (u.funzione ? " · " + u.funzione : "");
+  } else {
+    pill.textContent = "Ospite (solo guida collaboratore)";
+  }
+
+  // Hash #admin... solo se admin; altrimenti torna al primo capitolo collaboratore
+  function normalizzaHash() {
+    const h = (location.hash || "").replace(/^#/, "");
+    if (!h) return;
+    if (h.startsWith("admin") && !isAdmin) {
+      history.replaceState(null, "", "#login");
+      return;
+    }
+    const target = document.getElementById(h);
+    if (target && !target.classList.contains("hidden")) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  window.addEventListener("hashchange", normalizzaHash);
+  normalizzaHash();
+
+  const links = [...document.querySelectorAll("#helpNav a")];
+  const chapters = [...document.querySelectorAll(".chapter")];
+  function setActive(id) {
+    links.forEach(a => a.classList.toggle("active", a.getAttribute("data-chapter") === id));
+  }
+  links.forEach(a => a.addEventListener("click", () => setActive(a.getAttribute("data-chapter"))));
+  if (location.hash) setActive(location.hash.slice(1));
+
+  const search = document.getElementById("helpSearch");
+  const empty = document.getElementById("searchEmpty");
+  search.addEventListener("input", () => {
+    const q = search.value.trim().toLowerCase();
+    let visible = 0;
+    chapters.forEach(ch => {
+      if (ch.classList.contains("admin-only") && !isAdmin) { ch.classList.add("hidden"); return; }
+      if (!q) {
+        ch.classList.remove("hidden");
+        ch.querySelectorAll(".mark").forEach(m => { m.replaceWith(document.createTextNode(m.textContent)); });
+        visible++;
+        return;
+      }
+      const blob = (ch.getAttribute("data-keywords") + " " + ch.textContent).toLowerCase();
+      const ok = blob.includes(q);
+      ch.classList.toggle("hidden", !ok);
+      if (ok) visible++;
+    });
+    document.querySelectorAll(".nav-group").forEach(g => {
+      if (g.classList.contains("admin-only") && !isAdmin) g.classList.add("hidden");
+    });
+    links.forEach(a => {
+      if (a.classList.contains("admin-only") && !isAdmin) { a.classList.add("hidden"); return; }
+      const id = a.getAttribute("data-chapter");
+      const ch = document.getElementById(id);
+      a.classList.toggle("hidden", !!(ch && ch.classList.contains("hidden")));
+    });
+    empty.classList.toggle("hidden", visible > 0);
+  });
+})();
+</script>
+</body>
+</html>
